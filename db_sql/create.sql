@@ -11,7 +11,7 @@ CREATE TABLE USERS (
 
 CREATE TABLE TYPE (
 	idtype INTEGER AUTO_INCREMENT,
-	genre ENUM ('Action','Science-Fiction','Fantastic','Drama','Comedy','Adventure','Spy','Horror','War','Historic','Documentary','Martial-Arts','Western','Thriller','Detective','Theater','Poetry','Pop','PopRock','Rock','HardRock','Metal','Popular','Disco','Electro','Jazz','Funk','Country','Hip-Hop','Rap','Reggeae','Other'),
+	genre VARCHAR(50),
 	PRIMARY KEY(idtype)
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE WORK (
 	releasedate DATE,
 	wlength INTEGER,
 	nationality VARCHAR(50),
-	wtype ENUM ('Movie','Serie','Book','Song'),
+	wtype ENUM ('Movie','Serie','Book','Song','Other'),
 	PRIMARY KEY(idwork)
 );
 
@@ -57,12 +57,11 @@ CREATE TABLE ASSOC_TYPE_WORK (
 CREATE TABLE ASSOC_ARTIST_WORK (
 	idartist INTEGER NOT NULL,
 	idwork INTEGER NOT NULL,
-	job ENUM ('Director','Actor','Singer','Writer'),
+	job ENUM ('Director','Actor','Singer','Writer','Director-Actor','Singer-Writer','Other'),
 	PRIMARY KEY(idartist,idwork),
 	FOREIGN KEY(idartist) REFERENCES ARTIST(idartist),
 	FOREIGN KEY(idwork) REFERENCES WORK(idwork)
 );
-
 
 COMMIT;
 
