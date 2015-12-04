@@ -17,22 +17,35 @@ try {
 /*
 Exécute une reqûete SQL
 */
-function execQuery($query){
+function execQuery($query, $columns){
 	try {
+		$GLOBALS["BDD_CONNECTION"]->beginTransaction();
 		$response=$GLOBALS["BDD_CONNECTION"]->query($query);
-		$err=$GLOBALS["BDD_CONNECTION"]->errorInfo();
-		if (!empty($err[2])) {
-			echo "error <pre>query= ".$query."</pre><br>";
-			echo "<pre>".$err[2]."</pre><br>";
-			$GLOBALS["BDD_ERROR"] = TRUE;
-		}
-		return $response;
+		$GLOBALS["BDD_CONNECTION"]->commit();
+		// return something if it's a SELECT request
+		if(!empty($columns)) return constructArrayFromResponse($response, $columns);
 	} catch(Exception $e) {
 		echo('Erreur : <pre>'.$e->getMessage().'</pre><br />');
 		echo('N° : <pre>'.$e->getCode().'</pre>');
 		$GLOBALS["BDD_ERROR"] = TRUE;
+		$GLOBALS["BDD_CONNECTION"]->rollback();
 		die();
 	}
+}
+
+/*
+Construct an array with the query result
+*/
+function constructArrayFromResponse($response, $columns){
+	$r = array();
+	while($line = $response->fetch(PDO::FETCH_OBJ)){
+		$l = array();
+		foreach ($columns as $c) {
+			$l[$c] = $line->$c;
+		}
+		$r[] = $l;
+	}
+	return $r;
 }
 
 ?>
