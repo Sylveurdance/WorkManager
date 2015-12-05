@@ -2,12 +2,12 @@
 
 // Usage : require_once("connect.php");
 
-include 'secret_connection.php';
+require('secret_connection.php');
 
 $GLOBALS["BDD_ERROR"] = FALSE;
 
 try {
-	$GLOBALS["BDD_CONNECTION"] = new PDO('pgsql:host='.$PARAM_hote.';port='.$PARAM_port.';dbname='.$PARAM_nom_bd, $PARAM_utilisateur, $PARAM_mot_passe);
+	$GLOBALS["BDD_CONNECTION"] = new PDO('mysql:host='.$PARAM_hote.';port='.$PARAM_port.';dbname='.$PARAM_nom_bd, $PARAM_utilisateur, $PARAM_mot_passe);
 } catch(Exception $e) {
 	echo('Erreur : '.$e->getMessage().'<br />');
 	echo('N° : '.$e->getCode());
@@ -17,7 +17,7 @@ try {
 /*
 Exécute une reqûete SQL
 */
-function execQuery($query, $columns){
+function execQuery($query, $columns=array()){
 	try {
 		$GLOBALS["BDD_CONNECTION"]->beginTransaction();
 		$response=$GLOBALS["BDD_CONNECTION"]->query($query);

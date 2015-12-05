@@ -58,7 +58,7 @@ function getTypes(){
 	return execQuery($query, $columns);
 }
 
-function getType($genre){
+function getaType($genre){
 	$columns = Array("genre");
 	$query = "SELECT ".implode(",", $columns)."
 			FROM TYPE
